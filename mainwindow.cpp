@@ -77,20 +77,36 @@ void MainWindow::saveFile(QFile &file)
 
 void MainWindow::on_actionSave_triggered()
 {
-    QFile file{filePath};
-    if(isFileCanBeSave(file))
+    if(filePath.isEmpty() || filePath.isNull())
     {
-        saveFile(file);
+        on_actionSave_as_triggered();
+    }
+    else
+    {
+        QFile file{filePath};
+        if(isFileCanBeSave(file))
+        {
+            saveFile(file);
+        }
     }
 }
 
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QFile file{QFileDialog::getSaveFileName(this, "Save as")};
+    QString path{QFileDialog::getSaveFileName(this, "Save as")};
+
+    if(path.isEmpty())
+    {
+        return;
+    }
+
+    QFile file{path};
+
     if(isFileCanBeSave(file))
     {
         saveFile(file);
+        filePath = path;
     }
 }
 
@@ -140,7 +156,7 @@ void MainWindow::on_actionPaste_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this, "About", "");
+    QMessageBox::about(this, "About", " Notepad Written in Qt Widgets");
 }
 
 
