@@ -10,5 +10,6 @@
         <file>svg/redo.svg</file>
         <file>svg/save.svg</file>
         <file>svg/undo.svg</file>
+        <file>svg/exit.svg</file>
     </qresource>
 </RCC>

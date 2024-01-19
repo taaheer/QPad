@@ -101,6 +101,10 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/rec/svg/exit.svg</normaloff>:/rec/svg/exit.svg</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
