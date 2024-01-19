@@ -21,11 +21,9 @@ public:
 private slots:
     void on_actionNew_triggered();
 
+    void handleFileOperation(const QString &path, const QString &operation);
+
     void on_actionOpen_triggered();
-
-    bool isFileCanBeSave(QFile& file);
-
-    void saveFile(QFile& file);
 
     void on_actionSave_triggered();
 

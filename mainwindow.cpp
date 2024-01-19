@@ -23,11 +23,8 @@ void MainWindow::on_actionNew_triggered()
     ui->textEdit->setText("");
 }
 
-
-void MainWindow::on_actionOpen_triggered()
+void MainWindow::handleFileOperation(const QString &path, const QString &operation)
 {
-    QString path{QFileDialog::getOpenFileName(this, "Open a file")};
-
     if(path.isEmpty())
     {
         return;
@@ -35,59 +32,60 @@ void MainWindow::on_actionOpen_triggered()
 
     QFile file{path};
 
-    if(!file.open(QFile::ReadOnly | QFile::Text))
+    if(operation == "open")
     {
-        QMessageBox::warning(this, "Fail", "File could not be open");
-        return;
+        if(!file.open(QFile::ReadOnly | QFile::Text))
+        {
+            QMessageBox::warning(this, "Fail", "File could not be open");
+            return;
+        }
+    }
+    else if(operation == "save")
+    {
+        if(!file.open(QFile::WriteOnly | QFile::Text))
+        {
+            QMessageBox::warning(this, "Fail", "File could not be saved");
+            return;
+        }
     }
 
     filePath = path;
 
-    QTextStream in(&file);
-    QString text{in.readAll()};
-    ui->textEdit->setText(text);
+    if(operation == "open")
+    {
+        QTextStream in(&file);
+        QString text{in.readAll()};
+        ui->textEdit->setText(text);
+    }
+    else if(operation == "save")
+    {
+        QTextStream out(&file);
+        QString text{ui->textEdit->toPlainText()};
+        out << text;
+        if(!file.flush())
+        {
+            QMessageBox::warning(this, "Warning", "file could not be flused");
+        }
+    }
 }
 
-bool MainWindow::isFileCanBeSave(QFile &file)
-{
-    if(!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        QMessageBox::warning(this, "Fail", "File could not be saved");
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
 
-void MainWindow::saveFile(QFile &file)
+void MainWindow::on_actionOpen_triggered()
 {
-    QTextStream out(&file);
-    QString text{ui->textEdit->toPlainText()};
-    out << text;
-
-    if(!file.flush())
-    {
-        QMessageBox::warning(this, "Warning", "file could not be flused");
-    }
-    file.close();
+    QString path{QFileDialog::getOpenFileName(this, "Open a file")};
+    handleFileOperation(path, "open");
 }
 
 
 void MainWindow::on_actionSave_triggered()
 {
-    if(filePath.isEmpty() || filePath.isNull())
+    if(filePath.isEmpty())
     {
         on_actionSave_as_triggered();
     }
     else
     {
-        QFile file{filePath};
-        if(isFileCanBeSave(file))
-        {
-            saveFile(file);
-        }
+        handleFileOperation(filePath, "save");
     }
 }
 
@@ -95,19 +93,7 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionSave_as_triggered()
 {
     QString path{QFileDialog::getSaveFileName(this, "Save as")};
-
-    if(path.isEmpty())
-    {
-        return;
-    }
-
-    QFile file{path};
-
-    if(isFileCanBeSave(file))
-    {
-        saveFile(file);
-        filePath = path;
-    }
+    handleFileOperation(path, "save");
 }
 
 
