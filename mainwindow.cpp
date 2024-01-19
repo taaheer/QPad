@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setCentralWidget(ui->textEdit);
+    setWindowTitle("- QPad");
 }
 
 MainWindow::~MainWindow()
@@ -67,6 +68,8 @@ void MainWindow::handleFileOperation(const QString &path, const QString &operati
             QMessageBox::warning(this, "Warning", "file could not be flused");
         }
     }
+
+    setWindowTitle(QFileInfo(file).fileName() + " - QPad");
 }
 
 
