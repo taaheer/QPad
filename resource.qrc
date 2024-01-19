@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/rec">
+        <file>svg/copy.svg</file>
+        <file>svg/cut.svg</file>
+        <file>svg/help-circle.svg</file>
+        <file>svg/new_file.svg</file>
+        <file>svg/open_file.svg</file>
+        <file>svg/paste.svg</file>
+        <file>svg/Qt.svg</file>
+        <file>svg/redo.svg</file>
+        <file>svg/save.svg</file>
+        <file>svg/undo.svg</file>
+    </qresource>
+</RCC>
